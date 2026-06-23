@@ -1,6 +1,11 @@
 [gd_scene format=3 uid="uid://4jwdap07rhqd"]
 
+[ext_resource type="Script" uid="uid://cyb1owexgyl15" path="res://main.gd" id="1_ig7tw"]
+[ext_resource type="PackedScene" uid="uid://b4h0lv8l1fcga" path="res://unit.tscn" id="2_0xm2m"]
+
 [node name="Main" type="Node2D" unique_id=58887622]
+script = ExtResource("1_ig7tw")
+unit_scene = ExtResource("2_0xm2m")
 
 [node name="Sky" type="ColorRect" parent="." unique_id=1952915001]
 offset_right = 1280.0
