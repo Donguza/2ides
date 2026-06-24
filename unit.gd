@@ -18,19 +18,24 @@ func _ready() -> void:
 	_build_health_bar()
 
 func _physics_process(delta: float) -> void:
-	var target = _nearest_enemy_ahead()
-	if target != null:
-		# Enemy in range: hold position and attack on cooldown.
-		_attack_cooldown -= delta
-		if _attack_cooldown <= 0.0:
-			target.take_damage(stats.damage)
-			_attack_cooldown = 1.0 / stats.attack_rate
+	var enemy = _nearest_enemy_ahead()
+	if enemy != null:
+		_attack(enemy, delta)
 		return
 	if _friendly_blocking_ahead():
-		# A teammate is right in front: wait in line.
 		return
-	# Path is clear: march forward.
+	var target_base = _enemy_base_in_range()
+	if target_base != null:
+		_attack(target_base, delta)
+		return
+	_attack_cooldown = 0.0
 	position.x += stats.speed * team * delta
+
+func _attack(target, delta: float) -> void:
+	_attack_cooldown -= delta
+	if _attack_cooldown <= 0.0:
+		target.take_damage(stats.damage)
+		_attack_cooldown = 1.0 / stats.attack_rate
 
 func take_damage(amount: float) -> void:
 	if _dead:
@@ -59,6 +64,17 @@ func _nearest_enemy_ahead():
 			best_gap = gap
 			best = other
 	return best
+
+func _enemy_base_in_range():
+	for b in get_tree().get_nodes_in_group("bases"):
+		if b.team == team:
+			continue
+		if not b.is_alive():
+			continue
+		var gap: float = (b.front_x() - global_position.x) * team
+		if gap > 0.0 and gap <= stats.attack_range:
+			return b
+	return null
 
 func _friendly_blocking_ahead() -> bool:
 	for other in get_parent().get_children():
