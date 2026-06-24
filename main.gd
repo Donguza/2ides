@@ -9,6 +9,14 @@ func _ready() -> void:
 	spawn_button.pressed.connect(_on_spawn_button_pressed)
 
 func _on_spawn_button_pressed() -> void:
+	_spawn_unit(1, Vector2(180, 520))
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_E:
+		_spawn_unit(-1, Vector2(1100, 520))
+
+func _spawn_unit(team: int, pos: Vector2) -> void:
 	var unit = unit_scene.instantiate()
-	unit.position = Vector2(180, 520)
+	unit.team = team
+	unit.position = pos
 	units.add_child(unit)

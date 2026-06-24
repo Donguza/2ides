@@ -1,12 +1,14 @@
 [gd_scene format=3 uid="uid://b4h0lv8l1fcga"]
 
 [ext_resource type="Script" uid="uid://b4nlgh0nx5mbm" path="res://unit.gd" id="1_btf8p"]
+[ext_resource type="Resource" uid="uid://ctsu2rmp45vop" path="res://soldier.tres" id="2_ctwoc"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_x6d37"]
 size = Vector2(40, 60)
 
 [node name="Unit" type="Area2D" unique_id=1826208368]
 script = ExtResource("1_btf8p")
+stats = ExtResource("2_ctwoc")
 
 [node name="Body" type="ColorRect" parent="." unique_id=634121418]
 offset_left = -20.0
